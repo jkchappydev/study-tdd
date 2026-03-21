@@ -21,7 +21,7 @@ public class CafeKiosk {
         beverages.remove(beverage);
     }
 
-    public void clean() {
+    public void clear() {
         beverages.clear();
     }
 
