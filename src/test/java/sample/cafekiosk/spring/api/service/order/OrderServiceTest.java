@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import sample.cafekiosk.spring.api.controller.order.request.OrderCreateRequest;
+import sample.cafekiosk.spring.api.controller.order.dto.request.OrderCreateRequest;
 import sample.cafekiosk.spring.api.service.order.response.OrderResponse;
 import sample.cafekiosk.spring.domain.order.OrderRepository;
 import sample.cafekiosk.spring.domain.orderproduct.OrderProductRepository;
@@ -66,7 +66,7 @@ class OrderServiceTest {
                 .build();
 
         // when
-        OrderResponse orderResponse = orderService.createOrder(request, registeredDateTime);
+        OrderResponse orderResponse = orderService.createOrder(request.toServiceRequest(), registeredDateTime);
 
         // then
         assertThat(orderResponse).isNotNull();
@@ -97,7 +97,7 @@ class OrderServiceTest {
                 .build();
 
         // when
-        OrderResponse orderResponse = orderService.createOrder(request, registeredDateTime);
+        OrderResponse orderResponse = orderService.createOrder(request.toServiceRequest(), registeredDateTime);
 
         // then
         assertThat(orderResponse).isNotNull();
@@ -132,7 +132,7 @@ class OrderServiceTest {
                 .build();
 
         // when
-        OrderResponse orderResponse = orderService.createOrder(request, registeredDateTime);
+        OrderResponse orderResponse = orderService.createOrder(request.toServiceRequest(), registeredDateTime);
 
         // then
         assertThat(orderResponse).isNotNull();
@@ -178,7 +178,7 @@ class OrderServiceTest {
                 .build();
 
         // when // then
-        assertThatThrownBy(() -> orderService.createOrder(request, registeredDateTime))
+        assertThatThrownBy(() -> orderService.createOrder(request.toServiceRequest(), registeredDateTime))
                 .isInstanceOf(IllegalArgumentException.class)
                         .hasMessage("재고가 부족한 상품이 있습니다.");
     }
