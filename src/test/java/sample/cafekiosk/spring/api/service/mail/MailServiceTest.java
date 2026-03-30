@@ -19,8 +19,8 @@ import static org.mockito.Mockito.doReturn;
 @ExtendWith(MockitoExtension.class)
 class MailServiceTest {
 
-    // @Mock
-    @Spy
+    @Mock
+    // @Spy
     private MailSendClient mailSendClient;
 
     @Mock
@@ -39,18 +39,21 @@ class MailServiceTest {
         // MailService mailService = new MailService(mailSendClient, mailSendHistoryRepository); // 두 개의 Mock 객체를 가지고 있는 MailService
 
         // stubbing : 가짜 객체가 특정 호출에 대해 미리 정한 값을 반환하도록 설정한다.
-        // Mockito.when(mailSendClient.sendEmail(
-        //         anyString(), anyString(), anyString(), anyString())
-        // ).thenReturn(true);
+//        Mockito.when(mailSendClient.sendEmail(
+//            anyString(), anyString(), anyString(), anyString()
+//        )).thenReturn(true);
+
+        BDDMockito.given(mailSendClient.sendEmail(anyString(), anyString(), anyString(), anyString()))
+                .willReturn(true);
 
         // spy
         // mailSendClient.sendEmail() 만 stubbing 하고,
         // a(), b(), c() 는 실제객체 활용
         // @Mock
         // MailSendClient mailSendClient; 하면 log("a"), log("b"), log("c") 안나옴
-        doReturn(true)
-                .when(mailSendClient)
-                .sendEmail(anyString(), anyString(), anyString(), anyString());
+//        doReturn(true)
+//                .when(mailSendClient)
+//                .sendEmail(anyString(), anyString(), anyString(), anyString());
 
 
         // when
