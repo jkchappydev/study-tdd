@@ -14,4 +14,17 @@ public class MailSendClient {
         throw new IllegalArgumentException("메일 전송");
     }
 
+    // spy
+    public void a() {
+        log.info("a");
+    }
+
+    public void b() {
+        log.info("b");
+    }
+
+    public void c() {
+        log.info("c");
+    }
+
 }
