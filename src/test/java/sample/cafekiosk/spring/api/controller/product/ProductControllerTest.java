@@ -3,40 +3,19 @@ package sample.cafekiosk.spring.api.controller.product;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import sample.cafekiosk.spring.ControllerTestSupport;
 import sample.cafekiosk.spring.api.controller.product.dto.request.ProductCreateRequest;
-import sample.cafekiosk.spring.api.service.product.ProductService;
 import sample.cafekiosk.spring.api.service.product.response.ProductResponse;
 import sample.cafekiosk.spring.domain.product.ProductSellingStatus;
 import sample.cafekiosk.spring.domain.product.ProductType;
-import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
 
-@WebMvcTest(controllers = ProductController.class)
-class ProductControllerTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @MockitoBean // 테스트 스프링 컨테이너에 Mockito 로 만든 Mock 객체를 넣어준다.
-    // ProductService 에 @MockitoBean 을 적용하면 ProductService 대신에 'ProductService Mock 객체' 를 대신 컨테이너에 넣는다.
-    // @MockitoBean 이 없으면 ProductService 를 못 찾는다고 하면서 테스트가 불가능 할 것이다.
-    // 왜냐하면 ProductController 는 ProductService 가 있어야 생성될 수 있는 Bean 인데,
-    // @WebMvcTest 에서는 ProductService Bean 이 자동으로 안 올라올 수 있다.
-    // 그래서 ProductService 자리에 Mock 객체를 넣어줘야
-    // ProductController Bean 을 만들 수 있고, Controller 테스트를 진행할 수 있다.
-    private ProductService productService;
+class ProductControllerTest extends ControllerTestSupport {
 
     @DisplayName("신규 상품을 등록한다.")
     @Test
