@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '4.0.4'
     id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.asciidoctor.jvm.convert' version '4.0.5'
 }
 
 group = 'sample'
@@ -18,6 +19,7 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    asciidoctorExt
 }
 
 repositories {
@@ -46,6 +48,41 @@ dependencies {
 
     // Guava
     implementation 'com.google.guava:guava:33.5.0-jre'
+
+    // RestDocs
+    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+}
+
+ext { // 전역 변수
+    snippetsDir = file('build/generated-snippets')
+}
+
+asciidoctorj {
+    version = '3.0.0'
+}
+
+test {
+    outputs.dir snippetsDir // 테스트가 끝난 결과물
+}
+
+asciidoctor {
+    inputs.dir snippetsDir // 테스트가 끝난 결과물을 받아서
+    configurations 'asciidoctorExt' // 문서를 만든다
+
+    sources { // 특정 파일만 html 로 만든다. (여러개의 adoc file[api 많아지면 관리 힘들어서 분리] 을 하나로 합친 html 을 만들 때, 이거 안넣으면 각각의 adoc 에 대한 html 파일이 생성됨)
+        include("**/index.adoc")
+    }
+    baseDirFollowsSourceDir() // 다른 adoc 파일을 include 할 때 경로를 baseDir 로 맞춘다.
+    dependsOn test // 위의 내용은 test 가 수행된 다음에 asciidoctor 가 수행
+}
+
+bootJar {
+    dependsOn asciidoctor
+
+    from("${asciidoctor.outputDir}") {
+        into 'static/docs' // 만들어진 문서를 정적 파일로 보기 위함
+    }
 }
 
 tasks.named('test') {
